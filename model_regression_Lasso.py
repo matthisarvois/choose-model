@@ -54,3 +54,37 @@ print("MSE (test) - Lasso (λ = 0.1) :", mse_lasso)
 # (on récupère l'étape Lasso dans le pipeline)
 lasso_coef = lasso.named_steps["lasso"].coef_
 print("Nombre de coefficients non nuls (Lasso) :", np.sum(lasso_coef != 0))
+
+##Possibilité de faire une séléction du meileur chiffre ? 
+
+val = []
+list = np.linspace(0.001,10,100)
+
+for l in list :
+    lasso = make_pipeline(
+    StandardScaler(),
+    Lasso(alpha=l, max_iter=10000)
+)
+
+
+    #On fait un .fit comme toutes les autres méthodes
+    lasso.fit(X_train, y_train)
+
+    #Un predict comme toutes les autres méthodes
+    y_pred_lasso = lasso.predict(X_test)
+    mse_lasso = mean_squared_error(y_test, y_pred_lasso)
+    
+    val.append(mse_lasso)
+
+plt.plot(list,val)
+plt.show()
+
+#Ici on a un minimum qui tourne autour de 1,5, ainsi on peut écrire que .
+
+best_lam = list[np.argmin(val)]
+good_val = val[np.argmin(val)]
+
+print(f"Le meilleur lambda est {best_lam}, avec une erreur à {good_val}")
+#Ce modèles est le meileur parmi ceux qui traitent de la regression.
+
+
