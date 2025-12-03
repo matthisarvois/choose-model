@@ -49,4 +49,4 @@ qda.fit(Xc_train, yc_train)
 yc_pred_qda = qda.predict(Xc_test)
 print("Accuracy (test) - ADQ :", accuracy_score(yc_test, yc_pred_qda))
 
-#Il faut que je comprenne via ces deux résultats, lequels des deux est le meilleur.
+#j'aui compris et il faut en réalité s'aproché du 1. Ainsi cela fait un autre facteur de choix pour les modèles
