@@ -7,6 +7,7 @@ quelques temps.
 
 import numpy as np
 import matplotlib.pyplot as plt 
+import pandas as pd
 
 from sklearn import datasets
 from sklearn.model_selection import train_test_split, KFold, cross_val_score
@@ -60,5 +61,23 @@ scores = cross_val_score(
     scoring="accuracy"
 )
 print("Accuracy moyenne (10-fold CV) - RL :", scores.mean())
+
+def classi_logi(df,target):
+    X = df.drop(columns=target).to_numpy()
+    y = df[target].to_numeric()
+    
+    X_train, X_test, y_train, y_test = train_test_split(
+        X,y, test_size=0.3, stratify=y
+    )
+    list = [X_train, X_train, y_test, y_test]
+    #creation du model
+    cla = make_pipeline(
+        StandardScaler(),
+        LogisticRegression()
+    )
+    
+    return cla, list
+    
+    
 
 
