@@ -69,7 +69,7 @@ def classi_logi(df,target):
     X_train, X_test, y_train, y_test = train_test_split(
         X,y, test_size=0.3, stratify=y
     )
-    list = [X_train, X_train, y_test, y_test]
+    list = [X_train, X_test, y_train, y_test]
     #creation du model
     cla = make_pipeline(
         StandardScaler(),
