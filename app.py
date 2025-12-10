@@ -1,5 +1,11 @@
 # app.py
 import streamlit as st
+from sklearn import datasets
+import pandas as pd
+import plotly.express as px
+
+data =  datasets.load_breast_cancer(as_frame=True)
+data_frame = data.frame
 
 st.set_page_config(
     page_title="Choose Model",
@@ -20,19 +26,62 @@ st.sidebar.markdown("---")
 # ===================== PAGE : ANALYSE DES DONNÉES =====================
 if page == "Analyse des données":
     st.title("Analyse des données")
-    page_analyse = st.sidebar.radio("Navigation dans l'analyse des données :",
+    page_analyse = st.selectbox("Navigation dans l'analyse des données :",
                                     ("Importer les données",
                                      "Analyse univariée",
                                      "Analyse bivariée",
                                      "Analyse multivariée"))
     #=Sous page de l'analyse : import des données=#
     if page_analyse=="Importer les données" :
-        st.write("Prochainement nous ferons un sorte que toutes les bases de données puissent être étudiées")
+        st.write("Prochainement nous ferons un sorte que toutes les bases de données puissent être étudiées, mais pour l'instant nous ferons des analyses sur la base de données sur le diabète")
         # Placeholders pour plus tard
-        st.info("Cette fonctionnalité arrivera dans quelques temps...")
+        #ici je vais faire une page qui prend une fonction
     if page_analyse=="Analyse bivariée" :
         st.write("Dans cette page nous étudierons touts les liens possibles entre les variables selons les bases de données")
-    
+        st.markdown("---")
+        #On fait une selectbox sur les différents noms des datasets.
+        #fonction qui load des datasets s'il y en a
+        #data = st.selectbox()
+        
+        ## Pour l'instant on load le cancer dans le début de l'app.
+        list_columns = list(data_frame.columns)
+        list_var_comp = list(data_frame.columns)
+        
+        st.info("Dans cette partie vous allez choisir quelles variables vous voudriez comparer et étudier.")
+        col1,col2 = st.columns(2)
+        with col1:
+            var_1 = st.selectbox("Première variable à comparer",list_columns)
+        with col2:
+            var_2 = st.selectbox("Deuxième variable à comparer",list_var_comp)
+            
+        type_var_1 = data_frame[var_1].dtypes
+        type_var_2 = data_frame[var_2].dtypes
+        
+        if var_1 == var_2:
+            st.warning("Attention les variables séléctionnées sont identiques...😅")
+        else :
+            #je fais faire juste un graphique dans le cas ou j'ai deux floats
+            col1_bivar,col2_bivar = st.columns(2)
+            
+            with col1_bivar:
+                st.subheader("Affichage simple des points")
+                fig_scatter = px.scatter(data_frame,x = var_1, y = var_2)
+                st.plotly_chart(fig_scatter)
+            with col2_bivar:
+                st.subheader("Affichage simple des densité et contours")
+                fig_density_contour = px.density_contour(data_frame,x = var_1, y = var_2)
+                st.plotly_chart(fig_density_contour)
+            
+            st.subheader("Affichage de la distribution en histogrammes")
+            fig_hist = px.histogram(data_frame,x = var_1, y = var_2, histnorm="probability density")
+            st.plotly_chart(fig_hist)
+            
+                
+                
+                
+        
+
+        
     if page_analyse=="Analyse univariée" :
         st.write("Dans cette page nous étudirons toutes les variables unes à unes")
     
@@ -80,7 +129,7 @@ else:
         modele = st.selectbox(
             "Modèle de régression",
             [
-                "Linear Regression",
+                "Linear  Regression",
                 "Random Forest Regressor",
                 "Ridge",
                 "Lasso",
