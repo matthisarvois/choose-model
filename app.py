@@ -3,6 +3,7 @@ import streamlit as st
 from sklearn import datasets
 import pandas as pd
 import plotly.express as px
+import statsmodels.api as sm
 
 data =  datasets.load_breast_cancer(as_frame=True)
 data_frame = data.frame
@@ -48,7 +49,7 @@ if page == "Analyse des données":
         list_var_comp = list(data_frame.columns)
         
         st.info("Dans cette partie vous allez choisir quelles variables vous voudriez comparer et étudier.")
-        col1,col2 = st.columns(2)
+        col1,col2,col3,col4 = st.columns(4)
         with col1:
             var_1 = st.selectbox("Première variable à comparer",list_columns)
         with col2:
@@ -57,6 +58,8 @@ if page == "Analyse des données":
         type_var_1 = data_frame[var_1].dtypes
         type_var_2 = data_frame[var_2].dtypes
         
+        st.markdown("---")
+        
         if var_1 == var_2:
             st.warning("Attention les variables séléctionnées sont identiques...😅")
         else :
@@ -64,20 +67,15 @@ if page == "Analyse des données":
             col1_bivar,col2_bivar = st.columns(2)
             
             with col1_bivar:
-                st.subheader("Affichage simple des points")
-                fig_scatter = px.scatter(data_frame,x = var_1, y = var_2)
+                st.markdown("## Affichage simple des points")
+                fig_scatter = px.scatter(data_frame,x = var_1, y = var_2, trendline="ols")
                 st.plotly_chart(fig_scatter)
             with col2_bivar:
-                st.subheader("Affichage simple des densité et contours")
-                fig_density_contour = px.density_contour(data_frame,x = var_1, y = var_2)
-                st.plotly_chart(fig_density_contour)
+                corr = data_frame[var_1].corr(data_frame[var_2])
+                corr_pct = abs(round(corr*100,2))
             
-            st.subheader("Affichage de la distribution en histogrammes")
-            fig_hist = px.histogram(data_frame,x = var_1, y = var_2, histnorm="probability density")
-            st.plotly_chart(fig_hist)
-            
-                
-                
+                st.metric(label="Corrélation (%)",value=f"{corr_pct} %")
+        st.markdown("## Ajouter une ou plusieurs légendes")
                 
         
 
