@@ -1,12 +1,15 @@
 from sklearn import datasets
+import streamlit as st
 
-
+@st.cache_data
 def load_data():
     data =  datasets.load_breast_cancer(as_frame=True)
-    data_frame = data.frame
+    data_frame = data.frame.copy()
     return data_frame
 
-def transform_columns(data_frame):
+@st.cache_data
+def transform_columns(data):
+    data_frame = data.copy()
     data_frame.columns = (
         data_frame.columns
             .str.lower()
