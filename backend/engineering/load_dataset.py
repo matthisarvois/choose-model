@@ -20,4 +20,10 @@ def transform_columns(data):
             .str.replace(r'[^a-z0-9]', '_', regex=True)
     ) 
     return data_frame
+
+@st.cache_data
+def main_load():
+    df1 = load_data()
+    df = transform_columns(df1)
+    return df
     
