@@ -29,9 +29,9 @@ if page == "Analyse des données":
     st.title("Analyse des données")
     page_analyse = st.selectbox("Navigation dans l'analyse des données :",
                                     ("Importer les données",
-                                     "Analyse univariée",
-                                     "Analyse bivariée",
-                                     "Analyse multivariée"))
+                                    "Analyse univariée",
+                                    "Analyse bivariée",
+                                    "Analyse multivariée"))
     #=Sous page de l'analyse : import des données=#
     if page_analyse=="Importer les données" :
         st.write("Prochainement nous ferons un sorte que toutes les bases de données puissent être étudiées, mais pour l'instant nous ferons des analyses sur la base de données sur le diabète")
@@ -185,4 +185,3 @@ else:
         # y_pred = model.predict(X_test)
         # metrics = compute_metrics(...)
         st.success("Squelette d’entraînement OK – à connecter à ton code métier.")
-
