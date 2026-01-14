@@ -4,9 +4,9 @@ from sklearn import datasets
 import pandas as pd
 import plotly.express as px
 import statsmodels.api as sm
+from backend.engineering.load_dataset import main_load
 
-data =  datasets.load_breast_cancer(as_frame=True)
-data_frame = data.frame
+data_frame = main_load()
 
 st.set_page_config(
     page_title="Choose Model",
