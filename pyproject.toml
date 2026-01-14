@@ -15,4 +15,7 @@ dependencies = [
 ]
 
 [tool.setuptools]
-packages = ["backend"]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
